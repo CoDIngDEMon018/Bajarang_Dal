@@ -6,8 +6,9 @@ from torch.utils.data import Dataset, DataLoader
 from ultralytics import YOLO
 import argparse
 
-import torch
+# Clear GPU memory
 torch.cuda.empty_cache()
+
 # Hyperparameters
 EPOCHS = 10
 MOSAIC = 0.1
@@ -19,7 +20,7 @@ SINGLE_CLS = False
 
 # Custom Dataset Class
 class CustomYOLODataset(Dataset):
-    def __init__(self, image_dir, label_dir, img_size=1024, transform=None):
+    def __init__(self, image_dir, label_dir, img_size=640, transform=None):
         self.image_dir = image_dir
         self.label_dir = label_dir
         self.img_size = img_size
@@ -51,7 +52,7 @@ class CustomYOLODataset(Dataset):
 
 # Define transformations
 transform = transforms.Compose([
-    transforms.Resize((1024, 1024)),  # Resize to 1024x1024
+    transforms.Resize((640, 640)),  # Reduced image size to 640x640
     transforms.ToTensor(),           # Convert to tensor
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize
 ])
@@ -71,20 +72,25 @@ if __name__ == '__main__':
     # Dataset and DataLoader
     image_dir = "E:/projects/MLH/HackByte_Dataset/data/train/images"
     label_dir = "E:/projects/MLH/HackByte_Dataset/data/train/labels"
-    dataset = CustomYOLODataset(image_dir, label_dir, img_size=1024, transform=transform)
-    dataloader = DataLoader(dataset, batch_size=4, shuffle=True, collate_fn=None)  # Enable shuffling
+    dataset = CustomYOLODataset(image_dir, label_dir, img_size=640, transform=transform)
+    dataloader = DataLoader(dataset, batch_size=4, shuffle=True, collate_fn=None, num_workers=2)  # Reduced batch size
 
     # Initialize YOLO model
     this_dir = os.path.dirname(__file__)
     os.chdir(this_dir)
     model = YOLO(os.path.join(this_dir, "yolov8s.pt"))
 
+    # Freeze layers (freeze all layers except the detection head)
+    for name, param in model.model.named_parameters():
+        if "head" not in name:  # Keep detection head trainable
+            param.requires_grad = False
+
     # Train the model using the built-in train method
     results = model.train(
         data=os.path.join(this_dir, "yolo_params.yaml"),  # Path to dataset configuration
         epochs=args.epochs,
-        imgsz=1024,  # Image size
-        batch=16,  # Batch size
+        imgsz=640,  # Reduced image size
+        batch=8,  # Reduced batch size
         lr0=args.lr0,  # Initial learning rate
         lrf=args.lrf,  # Final learning rate
         optimizer=args.optimizer,  # Optimizer
@@ -93,8 +99,9 @@ if __name__ == '__main__':
         mixup=0.1,  # Mixup augmentation
         single_cls=args.single_cls,  # Single class training
         patience=30,  # Early stopping
-        # Shuffle dataset
-        workers=2 # Number of workers for DataLoader
+        workers=2,  # Number of workers for DataLoader
+        amp=True  # Enable mixed precision training
     )
 
     print("Training completed successfully!")
+    print("Results:", results)
