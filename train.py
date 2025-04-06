@@ -10,7 +10,7 @@ import argparse
 torch.cuda.empty_cache()
 
 # Hyperparameters
-EPOCHS = 10
+EPOCHS = 50  # Reduced number of epochs for faster training
 MOSAIC = 0.1
 OPTIMIZER = 'AdamW'
 MOMENTUM = 0.2
@@ -80,9 +80,10 @@ if __name__ == '__main__':
     os.chdir(this_dir)
     model = YOLO(os.path.join(this_dir, "yolov8s.pt"))
 
-    # Freeze layers (freeze all layers except the detection head)
-    for name, param in model.model.named_parameters():
-        if "head" not in name:  # Keep detection head trainable
+    # Freeze only the initial layers
+    freeze_count = 5  # Number of initial layers to freeze
+    for i, (name, param) in enumerate(model.model.named_parameters()):
+        if i < freeze_count:  # Freeze the first `freeze_count` layers
             param.requires_grad = False
 
     # Train the model using the built-in train method
@@ -98,7 +99,7 @@ if __name__ == '__main__':
         mosaic=args.mosaic,  # Mosaic augmentation
         mixup=0.1,  # Mixup augmentation
         single_cls=args.single_cls,  # Single class training
-        patience=30,  # Early stopping
+        patience=10,  # Early stopping after 10 epochs of no improvement
         workers=2,  # Number of workers for DataLoader
         amp=True  # Enable mixed precision training
     )
