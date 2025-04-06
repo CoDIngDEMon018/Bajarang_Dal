@@ -81,7 +81,7 @@ if __name__ == '__main__':
     model = YOLO(os.path.join(this_dir, "yolov8s.pt"))
 
     # Freeze only the initial layers
-    freeze_count = 5  # Number of initial layers to freeze
+    freeze_count =20   # Number of initial layers to freeze
     for i, (name, param) in enumerate(model.model.named_parameters()):
         if i < freeze_count:  # Freeze the first `freeze_count` layers
             param.requires_grad = False
@@ -91,7 +91,7 @@ if __name__ == '__main__':
         data=os.path.join(this_dir, "yolo_params.yaml"),  # Path to dataset configuration
         epochs=args.epochs,
         imgsz=640,  # Reduced image size
-        batch=8,  # Reduced batch size
+        batch=16,  # Reduced batch size
         lr0=args.lr0,  # Initial learning rate
         lrf=args.lrf,  # Final learning rate
         optimizer=args.optimizer,  # Optimizer
