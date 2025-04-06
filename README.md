@@ -55,7 +55,7 @@
 
 <img src="Result/F1_curve.png" alt="F1 Curve" width="600"/>
 
-- ✅ **mAP@0.5:** `88.6%`
+- ✅ **mAP@0.5:** `0.881`
 - ✅ **Best F1 Score:** `0.865`
 - ✅**Precision:** `0.916`
 - 🧠 **Model:** YOLOv8-small (best trade-off between speed and accuracy)
