@@ -1,7 +1,5 @@
 # 🚀 LAIKA: Space Station Object Detection
 
-
-
 ## 🧠 Project Overview
 
 **LAIKA** is a robust object detection pipeline designed to detect and classify critical equipment in simulated space station environments. Built as part of the [Duality.AI Track](https://duality.ai/) under [HACKBYTE3.0](https://www.hackbyte.in/), it aims to enhance operational safety by identifying objects under challenging conditions such as occlusion, lighting variation, and varying object orientations.
@@ -41,13 +39,13 @@
 - **Normalized Confusion Matrix**
 - **F1 Curve** (optimal threshold visualization)
 
-
 ---
 
 ## 📈 Results
+
 - 📌 Confusion Matrix:
-  
-<img src="Result/confusion_matrix_normalized.png" alt="Confusion Matrix" width="600"/>
+
+<img src="Result/confusion_matrix.png" alt="Confusion Matrix" width="600"/>
 
 - 📈 Normalized Confusion Matrix:
 
@@ -57,10 +55,11 @@
 
 <img src="Result/F1_curve.png" alt="F1 Curve" width="600"/>
 
-- **Best F1 Score:** `0.89`
-- **Model:** YOLOv8-small (best trade-off between speed and accuracy)
-- **Inference Speed:** ~15ms per image (NVIDIA RTX GPU)
-
+- ✅ **mAP@0.5:** `88.6%`
+- ✅ **Best F1 Score:** `0.865`
+- ✅**Precision:** `0.916`
+- 🧠 **Model:** YOLOv8-small (best trade-off between speed and accuracy)
+- ⚡ **Inference Speed:** ~15ms per image (NVIDIA RTX GPU)
 
 ---
 
