@@ -10,8 +10,8 @@ import argparse
 torch.cuda.empty_cache()
 
 # Hyperparameters
-EPOCHS = 50  # Reduced number of epochs for faster training
-MOSAIC = 0.1
+EPOCHS = 20  # Reduced number of epochs for faster training
+MOSAIC = 0.75
 OPTIMIZER = 'AdamW'
 MOMENTUM = 0.2
 LR0 = 0.001
@@ -90,8 +90,8 @@ if __name__ == '__main__':
     results = model.train(
         data=os.path.join(this_dir, "yolo_params.yaml"),  # Path to dataset configuration
         epochs=args.epochs,
-        imgsz=640,  # Reduced image size
-        batch=16,  # Reduced batch size
+        imgsz=1024,  # Reduced image size
+        batch=8,  # Reduced batch size
         lr0=args.lr0,  # Initial learning rate
         lrf=args.lrf,  # Final learning rate
         optimizer=args.optimizer,  # Optimizer
