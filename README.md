@@ -55,9 +55,9 @@
 
 <img src="Result/F1_curve.png" alt="F1 Curve" width="600"/>
 
-- ✅ **mAP@0.5:** `0.881`
-- ✅ **Best F1 Score:** `0.865`
-- ✅**Precision:** `0.916`
+- ✅ **mAP@0.5:** `0.885`
+- ✅ **Best F1 Score:** `0.877`
+- ✅**Precision:** `0.938`
 - 🧠 **Model:** YOLOv8-small (best trade-off between speed and accuracy)
 - ⚡ **Inference Speed:** ~15ms per image (NVIDIA RTX GPU)
 
