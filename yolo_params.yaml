@@ -1,0 +1,22 @@
+train: data/train/images
+val: data/val/images
+test: data/test
+nc: 3
+names: ['FireExtinguisher', 'ToolBox', 'OxygenTank']
+# Enhanced Backbone with Attention
+backbone:
+  - [-1, 1, Conv, [64, 3, 2]]    # P1/2
+  - [-1, 1, EMA, []]             # Channel attention
+  - [-1, 3, C2f, [128, True]]    
+  - [-1, 1, Conv, [256, 3, 2]]   # P3/8
+  - [-1, 6, C2f, [256, True]]
+  - [-1, 1, CBAM, []]            # Spatial attention
+  - [-1, 1, Conv, [512, 3, 2]]   # P4/16
+  - [-1, 6, C2f, [512, True]]
+  - [-1, 1, SPPF, [1024, 5]]
+
+head:
+  - [-1, 1, BiFPN, [512, 512]]   # Feature fusion
+  - [-1, 3, C2f, [256, False]]
+  - [-1, 1, RFB, []]             # Receptive field block
+  - [[17, 20, 23], 1, Detect, [nc]] 
